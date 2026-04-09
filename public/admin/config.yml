@@ -3,8 +3,7 @@ backend:
   name: github
   repo: Joyce-Peng-GitHub/ritelt-blogs
   branch: main
-  # base_url is required for self-hosted OAuth (see Step 7)
-  base_url: https://auth.yourdomain.com 
+  base_url: https://auth.ritelt.com # required for self-hosted OAuth
 
 media_folder: "public/uploads"
 public_folder: "/uploads"
