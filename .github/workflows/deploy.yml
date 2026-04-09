@@ -1,0 +1,35 @@
+name: Build and Deploy Astro Site
+
+on:
+  push:
+    branches:
+      - main # Runs every time a commit is pushed to main (or when Decap CMS publishes)
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Astro Project
+        run: npm run build
+
+      - name: Deploy to Server via rsync
+        uses: easingthemes/ssh-deploy@main
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }}
+          ARGS: "-rltgoDzvO --delete"
+          SOURCE: "dist/" # Astro outputs to the 'dist' folder
+          REMOTE_HOST: ${{ secrets.SERVER_IP }}
+          REMOTE_USER: ${{ secrets.SERVER_USERNAME }}
+          TARGET: "/var/www/blogs.ritelt.com/"

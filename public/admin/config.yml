@@ -1,0 +1,24 @@
+# public/admin/config.yml
+backend:
+  name: github
+  repo: Joyce-Peng-GitHub/ritelt-blogs
+  branch: main
+  # base_url is required for self-hosted OAuth (see Step 7)
+  base_url: https://auth.yourdomain.com 
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "blogs"
+    label: "Blog Passages"
+    folder: "src/content/blogs"
+    create: true
+    # Forces the filename to be a pure datetime string
+    slug: "{{year}}{{month}}{{day}}-{{hour}}{{minute}}{{second}}" 
+    fields:
+      - {label: "Author ID", name: "author", widget: "string"}
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Body", name: "body", widget: "markdown"}
+      - {label: "Custom CSS", name: "custom_css", widget: "text", required: false}
+      - {label: "Custom JS", name: "custom_js", widget: "text", required: false}
