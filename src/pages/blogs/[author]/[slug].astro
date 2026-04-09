@@ -26,19 +26,57 @@ const { Content } = await render(post);
     <meta charset="utf-8" />
     <title>{post.data.title}</title>
     
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+
+    <script is:inline>
+      const getThemePreference = () => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      };
+      const isDark = getThemePreference() === 'dark';
+      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    </script>
 
     {post.data.custom_css && <style set:html={post.data.custom_css} />}
   </head>
   <body>
-    <header>
-      <h1>{post.data.title}</h1>
-      <p>Author: {post.data.author}</p>
+    <header class="container">
+      <nav>
+        <ul>
+          <li><strong>{post.data.author}'s Blog</strong></li>
+        </ul>
+        <ul>
+          <li>
+            <button id="theme-toggle" class="outline">🌓 Toggle Theme</button>
+          </li>
+        </ul>
+      </nav>
+      
+      <hgroup>
+        <h1>{post.data.title}</h1>
+        <p>Published by {post.data.author}</p>
+      </hgroup>
     </header>
     
-    <main>
+    <main class="container">
       <Content />
     </main>
+
+    <script is:inline>
+      const handleToggleClick = () => {
+        const element = document.documentElement;
+        const currentTheme = element.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        
+        element.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+      }
+
+      document.getElementById('theme-toggle').addEventListener('click', handleToggleClick);
+    </script>
 
     {post.data.custom_js && <script set:html={post.data.custom_js} />}
   </body>
