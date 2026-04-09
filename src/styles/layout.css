@@ -1,0 +1,134 @@
+/* src/styles/layout.css */
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Top Navigation Bar */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(
+        --bg-color2,
+        #f8f8f8
+    ); /* Uses theme variables with fallbacks */
+    border-bottom: 1px solid var(--menu-divider-color, #e5e5e5);
+    color: var(--text-color1, #333);
+}
+
+.nav-links a {
+    margin-right: 1.5rem;
+    text-decoration: none;
+    font-weight: bold;
+    color: inherit;
+}
+
+.nav-links a:hover {
+    text-decoration: underline;
+}
+
+#theme-toggle {
+    background: transparent;
+    border: 1px solid var(--menu-divider-color, #ccc);
+    color: var(--text-color1, #333);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#theme-toggle:hover {
+    background: var(--hover-bg-color1, #eee);
+}
+
+/* Grid layout for TOC and Main Content */
+.layout-container {
+    display: flex;
+    flex-direction: row;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.toc-sidebar {
+    width: 250px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 2rem;
+    align-self: flex-start;
+    max-height: calc(100vh - 4rem);
+    overflow-y: auto;
+    padding-right: 1.5rem;
+    border-right: 1px solid var(--menu-divider-color, #eee);
+    margin-right: 2rem;
+}
+
+.toc-list {
+    list-style: none;
+    padding: 0;
+}
+
+.toc-list a {
+    text-decoration: none;
+    color: var(--text-color1, #555);
+    display: block;
+    padding: 0.2rem 0;
+}
+
+.toc-list a:hover {
+    color: var(--link-color, #4183c4);
+}
+
+.toc-depth-1 {
+    font-weight: bold;
+    margin-left: 0;
+    margin-top: 0.5rem;
+}
+.toc-depth-2 {
+    margin-left: 1rem;
+}
+.toc-depth-3 {
+    margin-left: 2rem;
+}
+.toc-depth-4 {
+    margin-left: 3rem;
+}
+
+.main-content {
+    flex-grow: 1;
+    min-width: 0;
+}
+
+/* Index Page specific list styles */
+.blog-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.blog-list li {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--menu-divider-color, #eee);
+    border-radius: 8px;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 800px) {
+    .layout-container {
+        flex-direction: column;
+    }
+    .toc-sidebar {
+        width: 100%;
+        position: static;
+        border-right: none;
+        border-bottom: 1px solid var(--menu-divider-color, #eee);
+        margin-right: 0;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+    }
+}

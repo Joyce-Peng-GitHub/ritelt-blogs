@@ -1,32 +1,25 @@
 ---
 // src/pages/blogs/[author]/index.astro
 import { getCollection } from 'astro:content';
+import '../../../../src/styles/layout.css'; 
 
 export async function getStaticPaths() {
   const allBlogs = await getCollection('blogs');
-
-  // 1. Extract a list of all unique authors
   const uniqueAuthors = [...new Set(allBlogs.map((post) => post.data.author))];
 
-  // 2. Generate a route for each author
   return uniqueAuthors.map((author) => {
-    
-    // 3. Find all posts written by this specific author
     const authorPosts = allBlogs.filter((post) => post.data.author === author);
     
-    // 4. Sort posts by newest first. 
-    // Since your filenames (post.id) are datetime strings (YYYYMMDDHHMMSS), 
-    // alphabetical sorting naturally puts them in chronological order!
+    // Sort posts chronologically
     authorPosts.sort((a, b) => b.id.localeCompare(a.id));
 
     return {
       params: { author: author },
-      props: { posts: authorPosts }, // Pass the sorted posts to the HTML below
+      props: { posts: authorPosts }, 
     };
   });
 }
 
-// Grab the variables passed down from getStaticPaths
 const { author } = Astro.params;
 const { posts } = Astro.props;
 ---
@@ -35,33 +28,56 @@ const { posts } = Astro.props;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
     <title>{`${author}'s Passages`}</title>
-    <style>
-      /* Basic styling to make the list look clean */
-      body { font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 2rem; }
-      ul { list-style-type: none; padding: 0; }
-      li { margin-bottom: 1rem; padding: 1rem; border: 1px solid #eee; border-radius: 8px; }
-      a { text-decoration: none; color: #0056b3; font-weight: bold; font-size: 1.2rem; }
-      a:hover { text-decoration: underline; }
-      .meta { color: #666; font-size: 0.9rem; margin-top: 0.5rem; }
-    </style>
+    
+    <link id="theme-css" rel="stylesheet" href="/styles/github-modified.css" />
   </head>
   <body>
-    <header>
-      <h1>Passages by {author}</h1>
-      <p>Total posts: {posts.length}</p>
-    </header>
+    <nav class="top-bar">
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href={`/blogs/${author}`}>{author}'s Posts</a>
+      </div>
+      <button id="theme-toggle" aria-label="Toggle Theme">🌓 Toggle Theme</button>
+    </nav>
 
-    <main>
-      <ul>
-        {posts.map((post) => (
-          <li>
-            <a href={`/blogs/${author}/${post.id}`}>{post.data.title}</a>
-            <div class="meta">Post ID: {post.id}</div>
-          </li>
-        ))}
-      </ul>
-    </main>
+    <div class="layout-container" style="justify-content: center;">
+      <main id="write" class="main-content" style="max-width: 800px;">
+        <header>
+          <h1>Passages by {author}</h1>
+          <p>Total posts: {posts.length}</p>
+        </header>
+
+        <ul class="blog-list">
+          {posts.map((post) => (
+            <li>
+              <a href={`/blogs/${author}/${post.id}`} style="font-size: 1.2rem; font-weight: bold;">{post.data.title}</a>
+              <div class="meta" style="color: var(--text-color3, #666); font-size: 0.9rem;">Post ID: {post.id}</div>
+            </li>
+          ))}
+        </ul>
+      </main>
+    </div>
+
+    <script is:inline>
+      const themeBtn = document.getElementById('theme-toggle');
+      const themeLink = document.getElementById('theme-css');
+      
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      if (savedTheme === 'dark') {
+        themeLink.href = '/styles/onedark-modified.css';
+      }
+
+      themeBtn.addEventListener('click', () => {
+        const isDark = themeLink.href.includes('onedark');
+        const newTheme = isDark ? 'light' : 'dark';
+        
+        themeLink.href = isDark 
+          ? '/styles/github-modified.css' 
+          : '/styles/onedark-modified.css';
+          
+        localStorage.setItem('theme', newTheme);
+      });
+    </script>
   </body>
 </html>

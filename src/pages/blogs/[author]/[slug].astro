@@ -1,14 +1,14 @@
 ---
 // src/pages/blogs/[author]/[slug].astro
 import { getCollection, render } from 'astro:content';
+import '../../../../src/styles/layout.css'; // Adjust the relative path if needed
 
 export async function getStaticPaths() {
   const allBlogs = await getCollection('blogs');
-
   return allBlogs.map((entry) => ({
     params: {
       author: entry.data.author, 
-      slug: entry.id, // In the new API, the filename is accessed via .id
+      slug: entry.id, 
     },
     props: { 
       post: entry 
@@ -17,65 +17,75 @@ export async function getStaticPaths() {
 }
 
 const { post } = Astro.props;
-// Render the markdown using the new standalone function
-const { Content } = await render(post);
+// Astro exposes headings alongside Content natively 
+const { Content, headings } = await render(post);
 ---
 
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{post.data.title}</title>
     
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" integrity="sha384-n8MVd4RsNIU0tAv4ct0nTaAbDJwPJzDEaqSD1odI+WdtXRGWt2kTvGFasHpSy3SV" crossorigin="anonymous">
 
-    <script is:inline>
-      const getThemePreference = () => {
-        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
-          return localStorage.getItem('theme');
-        }
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      };
-      const isDark = getThemePreference() === 'dark';
-      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-    </script>
+    <link id="theme-css" rel="stylesheet" href="/styles/github-modified.css" />
 
     {post.data.custom_css && <style set:html={post.data.custom_css} />}
   </head>
   <body>
-    <header class="container">
-      <nav>
-        <ul>
-          <li><strong>{post.data.author}'s Blog</strong></li>
-        </ul>
-        <ul>
-          <li>
-            <button id="theme-toggle" class="outline">🌓 Toggle Theme</button>
-          </li>
-        </ul>
-      </nav>
-      
-      <hgroup>
-        <h1>{post.data.title}</h1>
-        <p>Published by {post.data.author}</p>
-      </hgroup>
-    </header>
-    
-    <main class="container">
-      <Content />
-    </main>
+    <nav class="top-bar">
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href={`/blogs/${post.data.author}`}>{post.data.author}'s Posts</a>
+      </div>
+      <button id="theme-toggle" aria-label="Toggle Theme">🌓 Toggle Theme</button>
+    </nav>
+
+    <div class="layout-container">
+      {headings.length > 0 && (
+        <aside class="toc-sidebar">
+          <h3>Table of Contents</h3>
+          <ul class="toc-list">
+            {headings.map((heading) => (
+              <li class={`toc-depth-${heading.depth}`}>
+                <a href={`#${heading.slug}`}>{heading.text}</a>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      )}
+
+      <main id="write" class="main-content">
+        <header>
+          <h1>{post.data.title}</h1>
+          <p style="color: var(--text-color3, #777)">Written by: {post.data.author}</p>
+        </header>
+        <Content />
+      </main>
+    </div>
 
     <script is:inline>
-      const handleToggleClick = () => {
-        const element = document.documentElement;
-        const currentTheme = element.getAttribute('data-theme');
-        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-        
-        element.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
+      const themeBtn = document.getElementById('theme-toggle');
+      const themeLink = document.getElementById('theme-css');
+      
+      // Load preference from local storage
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      if (savedTheme === 'dark') {
+        themeLink.href = '/styles/onedark-modified.css';
       }
 
-      document.getElementById('theme-toggle').addEventListener('click', handleToggleClick);
+      // Handle toggle click
+      themeBtn.addEventListener('click', () => {
+        const isDark = themeLink.href.includes('onedark');
+        const newTheme = isDark ? 'light' : 'dark';
+        
+        themeLink.href = isDark 
+          ? '/styles/github-modified.css' 
+          : '/styles/onedark-modified.css';
+          
+        localStorage.setItem('theme', newTheme);
+      });
     </script>
 
     {post.data.custom_js && <script set:html={post.data.custom_js} />}
