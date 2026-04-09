@@ -7,5 +7,33 @@
   </head>
   <body>
     <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
+    <script>
+      CMS.registerEventListener({
+        name: 'preSave',
+        handler: ({ entry }) => {
+          // Check if the author is already set (e.g., when editing an existing post).
+          // This prevents Alice from taking ownership of Bob's post if she fixes a typo.
+          const existingAuthor = entry.get('data').get('author');
+          
+          if (!existingAuthor) {
+            // Fetch the logged-in user data from Local Storage
+            const userDataRaw = localStorage.getItem('decap-cms-user') || localStorage.getItem('netlify-cms-user');
+            
+            if (userDataRaw) {
+              const user = JSON.parse(userDataRaw);
+              // GitHub stores the username in the 'login' property
+              const githubUsername = user.login; 
+              
+              // Inject the GitHub username into the hidden 'author' field
+              return entry.get('data').set('author', githubUsername);
+            }
+          }
+          
+          // Return the entry unmodified if it already has an author
+          return entry.get('data');
+        },
+      });
+    </script>
   </body>
 </html>

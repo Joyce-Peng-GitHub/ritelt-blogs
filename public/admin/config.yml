@@ -16,7 +16,7 @@ collections:
     # Forces the filename to be a pure datetime string
     slug: "{{year}}{{month}}{{day}}-{{hour}}{{minute}}{{second}}" 
     fields:
-      - {label: "Author ID", name: "author", widget: "string"}
+      - {label: "Author ID", name: "author", widget: "hidden", default: ""}
       - {label: "Title", name: "title", widget: "string"}
       - {label: "Body", name: "body", widget: "markdown"}
       - {label: "Custom CSS", name: "custom_css", widget: "text", required: false}
