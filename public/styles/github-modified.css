@@ -414,3 +414,37 @@ header, .context-menu, .megamenu-content, footer{
     background-color: #f5f8fa;
     background-image: linear-gradient( 180deg , hsla(0, 0%, 100%, 0.8), hsla(0, 0%, 100%, 0)); 
 }
+
+/* ===== Astro/Shiki code block: light theme ===== */
+.astro-code,
+.astro-code span {
+  color: var(--shiki-light) !important;
+  font-style: var(--shiki-light-font-style) !important;
+  font-weight: var(--shiki-light-font-weight) !important;
+  text-decoration: var(--shiki-light-text-decoration) !important;
+}
+
+pre.astro-code,
+pre.shiki {
+  background-color: #f6f8fa !important;
+  border: 1px solid #e7eaed;
+  border-radius: 3px;
+  padding: 8px 12px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  overflow-x: auto;
+}
+
+pre.astro-code code,
+pre.shiki code {
+  background-color: transparent !important;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.9em;
+}
+
+pre.astro-code code span.line,
+pre.shiki code span.line {
+  background-color: transparent !important;
+}

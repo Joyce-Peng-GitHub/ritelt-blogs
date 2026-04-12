@@ -9,5 +9,12 @@ export default defineConfig({
   markdown: {
     remarkPlugins: [remarkMath, remarkDirective],
     rehypePlugins: [rehypeKatex],
+    shikiConfig: {
+      themes: {
+        light: 'github-light',
+        dark: 'one-dark-pro',
+      },
+      defaultColor: false,
+    },
   },
 });

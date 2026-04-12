@@ -228,6 +228,7 @@ ol {
 blockquote {
   border-left: 4px solid var(--text-color1);
   padding: 4px 15px;
+  margin: 0.8em 0;
   color: var(--text-color1);
   background-color: var(--bg-color5);
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
@@ -2065,4 +2066,39 @@ kbd {
 
 .row.text-input select {
   width: 510px !important;
+}
+
+/* ===== Astro/Shiki code block: activate dark theme ===== */
+.astro-code,
+.astro-code span {
+  color: var(--shiki-dark) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+}
+
+pre.astro-code,
+pre.shiki {
+  background-color: var(--bg-color5) !important;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  overflow-x: auto;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+}
+
+pre.astro-code code,
+pre.shiki code {
+  background-color: transparent !important;
+  border: none;
+  padding: 0;
+  margin: 0;
+  box-shadow: none;
+  font-size: 0.9em;
+}
+
+pre.astro-code code span.line,
+pre.shiki code span.line {
+  background-color: transparent !important;
 }
