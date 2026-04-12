@@ -2104,45 +2104,45 @@ pre.shiki code span.line {
 }
 
 .markdown-alert {
-  border-left-color: #30363d;
+  border-left-color: #30363d !important;
 }
 
 .markdown-alert.markdown-alert-note {
-  border-left-color: #1f6feb;
+  border-left-color: #1f6feb !important;
 }
 
 .markdown-alert.markdown-alert-note .markdown-alert-title {
-  color: #58a6ff;
+  color: #58a6ff !important;
 }
 
 .markdown-alert.markdown-alert-tip {
-  border-left-color: #238636;
+  border-left-color: #238636 !important;
 }
 
 .markdown-alert.markdown-alert-tip .markdown-alert-title {
-  color: #3fb950;
+  color: #3fb950 !important;
 }
 
 .markdown-alert.markdown-alert-important {
-  border-left-color: #8957e5;
+  border-left-color: #8957e5 !important;
 }
 
 .markdown-alert.markdown-alert-important .markdown-alert-title {
-  color: #a371f7;
+  color: #a371f7 !important;
 }
 
 .markdown-alert.markdown-alert-warning {
-  border-left-color: #9e6a03;
+  border-left-color: #9e6a03 !important;
 }
 
 .markdown-alert.markdown-alert-warning .markdown-alert-title {
-  color: #d29922;
+  color: #d29922 !important;
 }
 
 .markdown-alert.markdown-alert-caution {
-  border-left-color: #da3633;
+  border-left-color: #da3633 !important;
 }
 
 .markdown-alert.markdown-alert-caution .markdown-alert-title {
-  color: #f85149;
+  color: #f85149 !important;
 }
