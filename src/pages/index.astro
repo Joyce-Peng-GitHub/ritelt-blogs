@@ -1,17 +1,79 @@
 ---
+import { getCollection } from 'astro:content';
+import '../styles/layout.css';
 
+const allBlogs = await getCollection('blogs');
+
+const authorMap = new Map();
+for (const post of allBlogs) {
+  const author = post.data.author;
+  if (!authorMap.has(author)) {
+    authorMap.set(author, []);
+  }
+  authorMap.get(author).push(post);
+}
+
+const authors = [...authorMap.entries()]
+  .map(([name, posts]) => ({ name, count: posts.length }))
+  .sort((a, b) => b.count - a.count);
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RitelT Blogs</title>
+
+    <link id="theme-css" rel="stylesheet" href="/styles/github-modified.css" />
+  </head>
+  <body>
+    <nav class="top-bar">
+      <div class="nav-links">
+        <a href="/">Home</a>
+      </div>
+      <button id="theme-toggle" aria-label="Toggle Theme">🌓 Toggle Theme</button>
+    </nav>
+
+    <div class="layout-container" style="justify-content: center;">
+      <main id="write" class="main-content" style="max-width: 800px;">
+        <header>
+          <h1>RitelT Blogs</h1>
+          <p style="color: var(--text-color3, #777)">{authors.length} authors · {allBlogs.length} posts</p>
+        </header>
+
+        <h2>Authors</h2>
+        <ul class="blog-list">
+          {authors.map((author) => (
+            <li>
+              <a href={`/blogs/${author.name}`} style="font-size: 1.2rem; font-weight: bold;">{author.name}</a>
+              <div style="color: var(--text-color3, #666); font-size: 0.9rem;">{author.count} post{author.count !== 1 ? 's' : ''}</div>
+            </li>
+          ))}
+        </ul>
+      </main>
+    </div>
+
+    <script is:inline>
+      const themeBtn = document.getElementById('theme-toggle');
+      const themeLink = document.getElementById('theme-css');
+
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      if (savedTheme === 'dark') {
+        themeLink.href = '/styles/onedark-modified.css';
+      }
+
+      themeBtn.addEventListener('click', () => {
+        const isDark = themeLink.href.includes('onedark');
+        const newTheme = isDark ? 'light' : 'dark';
+
+        themeLink.href = isDark
+          ? '/styles/github-modified.css'
+          : '/styles/onedark-modified.css';
+
+        localStorage.setItem('theme', newTheme);
+      });
+    </script>
+  </body>
 </html>
