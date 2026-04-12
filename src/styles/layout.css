@@ -98,6 +98,19 @@ body {
 .toc-depth-4 {
     margin-left: 3rem;
 }
+.toc-depth-5 {
+    margin-left: 4rem;
+}
+.toc-depth-6 {
+    margin-left: 5rem;
+}
+
+.inline-toc {
+    padding: 1rem 1.5rem;
+    margin: 1rem 0;
+    border-radius: 6px;
+    border: 1px solid var(--menu-divider-color, #e5e5e5);
+}
 
 .main-content {
     flex-grow: 1;
