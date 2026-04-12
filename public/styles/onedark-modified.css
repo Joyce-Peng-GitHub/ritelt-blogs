@@ -2104,15 +2104,45 @@ pre.shiki code span.line {
 }
 
 .markdown-alert {
-  --color-border-default: #30363d;
-  --color-accent-fg: #58a6ff;
-  --color-accent-emphasis: #1f6feb;
-  --color-danger-fg: #f85149;
-  --color-danger-emphasis: #da3633;
-  --color-attention-fg: #d29922;
-  --color-attention-emphasis: #9e6a03;
-  --color-done-fg: #a371f7;
-  --color-done-emphasis: #8957e5;
-  --color-success-fg: #3fb950;
-  --color-success-emphasis: #238636;
+  border-left-color: #30363d;
+}
+
+.markdown-alert.markdown-alert-note {
+  border-left-color: #1f6feb;
+}
+
+.markdown-alert.markdown-alert-note .markdown-alert-title {
+  color: #58a6ff;
+}
+
+.markdown-alert.markdown-alert-tip {
+  border-left-color: #238636;
+}
+
+.markdown-alert.markdown-alert-tip .markdown-alert-title {
+  color: #3fb950;
+}
+
+.markdown-alert.markdown-alert-important {
+  border-left-color: #8957e5;
+}
+
+.markdown-alert.markdown-alert-important .markdown-alert-title {
+  color: #a371f7;
+}
+
+.markdown-alert.markdown-alert-warning {
+  border-left-color: #9e6a03;
+}
+
+.markdown-alert.markdown-alert-warning .markdown-alert-title {
+  color: #d29922;
+}
+
+.markdown-alert.markdown-alert-caution {
+  border-left-color: #da3633;
+}
+
+.markdown-alert.markdown-alert-caution .markdown-alert-title {
+  color: #f85149;
 }
