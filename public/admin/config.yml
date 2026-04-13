@@ -18,6 +18,6 @@ collections:
     fields:
       - {label: "Author ID", name: "author", widget: "hidden", default: ""}
       - {label: "Title", name: "title", widget: "string"}
-      - {label: "Body", name: "body", widget: "markdown", modes: ["rich_text", "raw"]}
+      - {label: "Body", name: "body", widget: "markdown"}
       - {label: "Custom CSS", name: "custom_css", widget: "text", required: false}
       - {label: "Custom JS", name: "custom_js", widget: "text", required: false}
